@@ -94,13 +94,13 @@ def get_last_pointer(sheet_id):
     print(type(values))
     return values
 
-def upload_image(image):
+def upload_image(creds,image):
     try:
         # create drive api client
         service = build("drive", "v3", credentials=creds)
 
         file_metadata = {
-            "name": "1.jpeg",
+            "name": image.filename,
         }
         media = MediaIoBaseUpload(image, mimetype=image.mimetype, resumable=True)
         # pylint: disable=maybe-no-member
@@ -110,7 +110,8 @@ def upload_image(image):
             .execute()
         )
         print(f'File with ID: "{file.get("id")}" has been uploaded.')
-
+        return file.get("id")
     except HttpError as error:
         print(f"An error occurred: {error}")
         file = None
+        return None

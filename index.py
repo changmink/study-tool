@@ -30,7 +30,7 @@ def upload_note():
     if image is not None:
         buffered_memory = BytesIO()
         image.save(buffered_memory)
-        api.upload_image(image)
+        file_id = api.upload_image(creds, image)
 
     last_point = api.get_last_pointer(sheet_id)[0][0]
     api.write_sheet(creds, sheet_id, f'시트1!A{last_point}', [[time.strftime('%Y-%m-%d-%H:%M:%S'), name, content]])
