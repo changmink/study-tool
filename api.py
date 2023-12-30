@@ -8,7 +8,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseUpload
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-LAST_POINTER = "시트1!B1"
+LAST_POINTER = "시트1!G1"
 
 def read_sheet(creds, spreadsheet_id, range_name):
     try:
@@ -110,7 +110,8 @@ def upload_image(creds,image):
             .execute()
         )
         print(f'File with ID: "{file.get("id")}" has been uploaded.')
-        return file.get("id")
+
+        return "https://drive.google.com/file/d/" + file.get("id")
     except HttpError as error:
         print(f"An error occurred: {error}")
         file = None

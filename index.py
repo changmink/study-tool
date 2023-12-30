@@ -6,7 +6,7 @@ from flask import Flask,request
 import api
 
 app = Flask(__name__)
-LAST_POINTER = "시트1!B1"
+LAST_POINTER = "시트1!G1"
 
 @app.route('/sheet')
 def sheet():
@@ -15,7 +15,7 @@ def sheet():
     name = "study"
   creds = api.get_creds()
   sheet_id = api.create_sheet(creds, name)
-  api.write_sheet(creds, sheet_id, "시트1!A1", [["test"]])
+  api.write_sheet(creds, sheet_id, "시트1!A1", [["날짜", "시간", "이름", "내용", "인증"]])
   api.write_sheet(creds, sheet_id, LAST_POINTER, [[2]])
   return sheet_id
 
@@ -30,13 +30,15 @@ def upload_note():
     creds = api.get_creds()
 
     image = request.files.get("image")
+    link = None
     if image is not None:
         buffered_memory = BytesIO()
         image.save(buffered_memory)
-        file_id = api.upload_image(creds, image)
+        link = api.upload_image(creds, image)
+        
 
     last_point = api.get_last_pointer(sheet_id)[0][0]
-    api.write_sheet(creds, sheet_id, f'시트1!A{last_point}', [[time.strftime('%Y-%m-%d-%H:%M:%S'), name, content]])
+    api.write_sheet(creds, sheet_id, f'시트1!A{last_point}', [[time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S'), name, content, link]])
     last_point = int(last_point) + 1
     api.set_last_pointer(sheet_id, last_point)
     return "Success"
