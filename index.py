@@ -10,8 +10,11 @@ LAST_POINTER = "시트1!B1"
 
 @app.route('/sheet')
 def sheet():
+  name = request.args.get('name')
+  if name is None:
+    name = "study"
   creds = api.get_creds()
-  sheet_id = api.create_sheet(creds, "study2")
+  sheet_id = api.create_sheet(creds, name)
   api.write_sheet(creds, sheet_id, "시트1!A1", [["test"]])
   api.write_sheet(creds, sheet_id, LAST_POINTER, [[2]])
   return sheet_id
