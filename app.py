@@ -48,4 +48,4 @@ def upload_note():
     return "Success"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port='8000')
