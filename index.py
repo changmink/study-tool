@@ -2,12 +2,16 @@
 from io import BytesIO
 from datetime import datetime
 
-from flask import Flask,request
+from flask import Flask, request, render_template
 import api
 
 app = Flask(__name__)
 LAST_POINTER = "시트1!G1"
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+    
 @app.route('/sheet')
 def sheet():
   name = request.args.get('name')
